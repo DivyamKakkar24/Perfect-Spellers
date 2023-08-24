@@ -1,0 +1,22 @@
+.inputForm input{
+  width: 10rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font: inherit;
+  padding-left: 0.5rem;
+  font-size: large;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.inputForm button {
+  font: inherit;
+  cursor: pointer;
+  background-color: green;
+  /* border: 1px solid #8a2b06; */
+  color: white;
+  padding: 0.25rem 2rem;
+  border-radius: 20px;
+  font-weight: bold;
+}
