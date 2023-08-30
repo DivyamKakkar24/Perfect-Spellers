@@ -7,6 +7,7 @@ const WordItemForm = (props) => {
   const [wordIsValid, setWordIsValid] = useState(true);
 	const wordInputRef = useRef();
 
+
   const submitHandler = async(event) => {
 		event.preventDefault();
 		const enteredWord = wordInputRef.current.value;
@@ -30,6 +31,7 @@ const WordItemForm = (props) => {
     }
 	};
 
+  
   return (
     <form onSubmit={submitHandler} className='inputForm'>
       <input ref={wordInputRef} id={'word_' + props.id} type='text' placeholder='Enter the Word'/>
