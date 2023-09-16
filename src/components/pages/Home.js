@@ -1,13 +1,19 @@
 import React from 'react';
 import Navbar from '../header/Navbar';
-import SpellWords from '../player/SpellWords';
+import Welcome from '../ui/Welcome';
+import ProfileNavbar from '../header/ProfileNavbar';
+import { useRouteLoaderData } from 'react-router-dom';
 
 const Home = () => {
+	// const ctx = useContext(AuthContext);
+	const token = useRouteLoaderData('root');
+
 	return (
-	  <div>
-	  	<Navbar />
-	  	<SpellWords />
-	  </div>
+	  <>
+	  	{token && <ProfileNavbar />}
+			{!token && <Navbar />}
+	  	<Welcome />
+	  </>
 	)
 };
 

@@ -1,25 +1,39 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Entry from './components/pages/Entry';
 import Home from './components/pages/Home';
+import ErrorPage from './components/pages/Error';
+import ProfileHome from './components/pages/ProfileHome';
+import { tokenLoader } from './util/auth';
 
+
+const router = createBrowserRouter([
+  { 
+    path: '/', 
+    element: <Home />, 
+    errorElement: <ErrorPage />,
+    id: 'root',
+    loader: tokenLoader
+  },
+  { 
+    path: '/home', 
+    element: <ProfileHome />, 
+    errorElement: <ErrorPage />,
+    id: 'profile',
+    loader: tokenLoader
+  },
+  { 
+    path: '/auth', 
+    element: <Entry />,
+    id: 'auth',
+    loader: tokenLoader
+  }
+]);
 
 function App() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const User = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
-
-    if (!User) navigate('/login');
-  }, [navigate]);
-
-  return (
-    <Routes>
-    <Route path="login" element={<Entry />} />
-    <Route path="/*" element={<Home />} />
-    </Routes>
-  );
+  
+  return <RouterProvider router={router} />;
 }
 
 export default App;

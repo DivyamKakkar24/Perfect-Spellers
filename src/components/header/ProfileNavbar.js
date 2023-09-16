@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Navbar.css';
+import AuthContext from '../../context/auth-context';
 
+const ProfileNavbar = () => {
+  const ctx = useContext(AuthContext);
 
-const Navbar = () => {
+  const navigate = useNavigate();
+
+  const logoutHandle = async () => {
+    try {
+      await ctx.onLogOut();
+      
+      localStorage.removeItem('token');
+      navigate("/");
+      
+    } catch(err) {
+      console.log(err.message);
+    }
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -29,16 +45,17 @@ const Navbar = () => {
             <Link className='a' to = "/">Spelling App Demo</Link>
           </Typography>
 
-          <Link className='a' to = "/auth?mode=login">
-            <Button variant='contained' sx={{background: '#79D2F0', color: '#000000'}}>
-              Login
-            </Button>
-          </Link>
+          <Typography variant="subtitle1" gutterBottom color={'#A9FCF1'} sx={{mr: 8}}>
+            {ctx.user.email}
+          </Typography>
 
+          <Button variant='contained' endIcon={<LogoutIcon />} onClick={logoutHandle}>
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
   );
 }
 
-export default Navbar;
+export default ProfileNavbar;

@@ -1,27 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import Navbar from '../header/Navbar';
-import Login from '../auth/Login';
+import AuthForm from '../auth/Authenticate';
+import { Navigate, useRouteLoaderData } from 'react-router-dom';
+import AuthContext from '../../context/auth-context';
 
-// const clientId = "975198042328-vnmnas78i021t67fqe2raljeguqgbvca.apps.googleusercontent.com";
 
 const Entry = () => {
-
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: ""
-  //     })
-  //   };
-
-  //   gapi.load('client:auth2', start);
-  // });
+	const token = useRouteLoaderData('auth');
+	const ctx = useContext(AuthContext);
+	
+	if(token && ctx.user && token === ctx.user.accessToken){
+		return <Navigate to="/home" />;
+	}
   
 	return (
-	  <div>
+	  <>
 	  	<Navbar />
-      <Login />
-	  </div>
+      <AuthForm />
+	  </>
 	)
 };
 

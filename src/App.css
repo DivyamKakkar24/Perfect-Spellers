@@ -5,5 +5,10 @@
 body{
   padding:0;
   margin:0;
-  background-color: #C5EFFD;
+  background-color: #F1f5f8;
+}
+
+main {
+  margin: 3rem auto;
+  text-align: center;
 }

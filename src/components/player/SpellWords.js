@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import Style from './SpellWords.css';
 import Card from "../ui/Card";
 import WordItem from "./worditem/WordItem";
+import Loading from "../ui/Loading";
 
 
 const SpellWords = () => {
   const [words, setWords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchWords = async () => {
     await getDocs(collection(db_firestore, "test_sound"))
@@ -16,8 +18,9 @@ const SpellWords = () => {
 
         setWords(newData);
 
-        // console.log(newData);
       })
+    
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -36,9 +39,13 @@ const SpellWords = () => {
 
   return (
     <section className="wordsList">
-      <Card>
-        <ul>{wordList}</ul>
-      </Card>
+      {isLoading && <Loading />}
+
+      {!isLoading &&
+        <Card>
+          <ul>{wordList}</ul>
+        </Card>
+      }
     </section>
   )
 
