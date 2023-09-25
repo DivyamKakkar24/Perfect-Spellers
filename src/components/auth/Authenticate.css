@@ -12,3 +12,12 @@
 .g-btn {
   width: 100% !important;
 }
+
+.recaptcha {
+  display: flex;
+  margin: 1rem auto;
+}
+
+.g-captcha {
+  width: 100% !important;
+}

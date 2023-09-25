@@ -15,6 +15,8 @@ import Copyright from '../ui/Copyright';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
 import GoogleAuth from './GoogleAuth';
+import ReCAPTCHA from 'react-google-recaptcha';
+import Styles from './Authenticate.css';
 
 
 const defaultTheme = createTheme();
@@ -22,6 +24,7 @@ const defaultTheme = createTheme();
 const Login = () => {
   const ctx = React.useContext(AuthContext);
   const [error, setError] = React.useState("");
+  const [verified, setVerified] = React.useState(false);
 
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
@@ -45,6 +48,12 @@ const Login = () => {
       setError(err.message);
     }
   };
+
+  const recaptchaOnChange = (value) => {
+    console.log('Captcha value: ', value);
+    setVerified(true);
+  }
+
 
   return(
     <ThemeProvider theme={defaultTheme}>
@@ -90,14 +99,25 @@ const Login = () => {
               autoComplete="current-password"
               inputRef={passwordRef}
             />
+
+            <div className='recaptcha'>
+              <ReCAPTCHA
+                sitekey='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+                onChange={recaptchaOnChange}
+                className='g-captcha'
+              />
+            </div>
+            
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 0, mb: 2 }}
+              disabled={!verified}
             >
               Sign In
             </Button>
+
             <Grid container sx={{ mb: 2 }}>
               <Grid item xs>
                 <Link href="#" variant="body2">

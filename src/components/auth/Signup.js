@@ -15,6 +15,8 @@ import Copyright from '../ui/Copyright';
 import AuthContext from '../../context/auth-context';
 import { useNavigate } from 'react-router-dom';
 import GoogleAuth from './GoogleAuth';
+import ReCAPTCHA from 'react-google-recaptcha';
+import Styles from './Authenticate.css';
 
 
 const defaultTheme = createTheme();
@@ -22,6 +24,7 @@ const defaultTheme = createTheme();
 const SignUp = () => {
   const ctx = React.useContext(AuthContext);
   const [error, setError] = React.useState("");
+  const [verified, setVerified] = React.useState(false);
 
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
@@ -45,6 +48,12 @@ const SignUp = () => {
     }
 
   };
+
+  const recaptchaOnChange = (value) => {
+    console.log('Captcha value: ', value);
+    setVerified(true);
+  }
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -101,7 +110,7 @@ const SignUp = () => {
                   inputRef={emailRef}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ mb: 1 }}>
                 <TextField
                   required
                   fullWidth
@@ -120,14 +129,25 @@ const SignUp = () => {
                 />
               </Grid> */}
             </Grid>
+            
+            <div className='recaptcha'>
+              <ReCAPTCHA
+                sitekey='6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+                onChange={recaptchaOnChange}
+                className='g-captcha'
+              />
+            </div>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 0, mb: 2 }}
+              disabled={!verified}
             >
               Sign Up
             </Button>
+
             <Grid container justifyContent="flex-end" sx={{ mb: 2 }}>
               <Grid item>
                 <Link href="?mode=login" variant="body2">
