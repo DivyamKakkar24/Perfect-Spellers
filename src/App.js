@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Entry from './components/pages/Entry';
 import Home from './components/pages/Home';
 import ErrorPage from './components/pages/Error';
-import ProfileHome from './components/pages/ProfileHome';
 import { tokenLoader } from './util/auth';
 
 
@@ -18,9 +17,9 @@ const router = createBrowserRouter([
   },
   { 
     path: '/home', 
-    element: <ProfileHome />, 
+    element: <Home />, 
     errorElement: <ErrorPage />,
-    id: 'profile',
+    id: 'home',
     loader: tokenLoader
   },
   { 

@@ -6,11 +6,16 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Styles from './Navbar.css';
 
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const loginButtonHandle = async () => {
+    navigate('/auth?mode=login');
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -29,11 +34,18 @@ const Navbar = () => {
             <Link className='a' to = "/">Spelling App Demo</Link>
           </Typography>
 
-          <Link className='a' to = "/auth?mode=login">
-            <Button variant='contained' sx={{background: '#79D2F0', color: '#000000'}}>
-              Login
-            </Button>
-          </Link>
+          <Button 
+            variant='contained' 
+            sx={{
+              background: '#ccf4fe', 
+              color: '#000000', 
+              "&:hover": {backgroundColor: "#a9e1fd" },
+              borderRadius: 16
+            }}
+            onClick={loginButtonHandle}
+          >
+            Login
+          </Button>
 
         </Toolbar>
       </AppBar>

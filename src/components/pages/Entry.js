@@ -10,7 +10,7 @@ const Entry = () => {
 	const ctx = useContext(AuthContext);
 	
 	if(token && ctx.user && token === ctx.user.accessToken){
-		return <Navigate to="/home" />;
+		return <Navigate to="/" />;
 	}
   
 	return (

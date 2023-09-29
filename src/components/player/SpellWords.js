@@ -25,14 +25,13 @@ const SpellWords = () => {
 
   useEffect(() => {
     fetchWords();
-    console.log(words);
   }, []);
 
-  const wordList = words.map(w => (
+  const wordList = words.map((w, i) => (
     <WordItem
       id = {w.id}
       key = {w.id}
-      name = {w.name}
+      name = {`Word ${i + 1}`}
       sound = {w.encoded_base64}
     />
   ));
@@ -42,12 +41,12 @@ const SpellWords = () => {
       {isLoading && <Loading />}
 
       {!isLoading &&
-        <Card>
+        <Card colour = {'white'}>
           <ul>{wordList}</ul>
         </Card>
       }
     </section>
-  )
+  );
 
 }
 

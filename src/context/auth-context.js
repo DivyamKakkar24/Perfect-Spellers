@@ -12,7 +12,6 @@ import { auth } from '../firebase';
 
 const AuthContext = React.createContext({
   user: null,
-  isLoggedIn: false,
   onSignUp: (email, password) => {},
   onLogIn: (email, password) => {},
   onLogOut: () => {},
@@ -55,7 +54,6 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider
       value={{
         user,
-        isLoggedIn: false,
         onSignUp: signUpHandler,
         onLogIn: logInHandler,
         onLogOut: logOutHandler,
