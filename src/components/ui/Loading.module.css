@@ -1,4 +1,17 @@
 .loading {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.loading img {
+	max-width: 100%;
+  max-height: 100%;
+  opacity: 0.8;
+}
+
+
+.loading2 {
   display: inline-block;
   width: 50px;
   height: 50px;
@@ -22,3 +35,4 @@
 @-webkit-keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }
+

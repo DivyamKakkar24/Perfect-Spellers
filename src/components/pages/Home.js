@@ -5,11 +5,22 @@ import { Navigate, useLocation, useRouteLoaderData } from 'react-router-dom';
 import SelectCriteria from '../player/SelectCriteria';
 import SpellWords from '../player/SpellWords';
 import AuthContext from '../../context/auth-context';
+import { useSelector } from 'react-redux';
+import BlankImage from '../ui/BlankImage';
+import FoundWords from '../player/FoundWords';
 
 
 const Home = () => {
 	const ctx = useContext(AuthContext);
 	const token = useRouteLoaderData('root');
+
+	const showFoundWords = useSelector((state) => state.showFoundWordsList);
+
+	const showPractice = useSelector((state) => state.showPracticeList);
+
+	const showBlank = useSelector((state) => state.showBlanki);
+
+	const newList = useSelector((state) => state.reloadId);
 
 	let valid = false;
 	
@@ -29,7 +40,9 @@ const Home = () => {
 	  	{valid && <ProfileNavbar />}
 			{!valid && <Navbar />}
 			<SelectCriteria />
-	  	<SpellWords />
+			{showBlank && <BlankImage />}
+			{showFoundWords && <FoundWords key={newList} />}
+	  	{showPractice && <SpellWords key={newList} />}
 	  </>
 	)
 };

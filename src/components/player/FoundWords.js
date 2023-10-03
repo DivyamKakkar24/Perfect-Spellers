@@ -1,13 +1,13 @@
 import { collection, getDocs } from "firebase/firestore";
-import {db_firestore} from '../../firebase';
-import { useEffect, useState } from 'react';
-import Style from './SpellWords.css';
+import { useEffect, useState } from "react";
 import Card from "../ui/Card";
-import WordItem from "./worditem/WordItem";
 import Loading from "../ui/Loading";
+import { db_firestore } from "../../firebase";
+import FoundWord from "./foundword/FoundWord";
+import classes from './FoundWords.module.css';
 
 
-const SpellWords = () => {
+const FoundWords = () => {
   const [words, setWords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -28,27 +28,26 @@ const SpellWords = () => {
   }, []);
 
   const wordList = words.slice(0, 10).map((w, i) => (
-    <WordItem
-      id = {w.id}
-      key = {w.id}
-      name = {`Word ${i + 1}`}
-      usaccent = {w.audio_US}
-      ukaccent = {w.audio_IN}
+    <FoundWord
+      id = {i}
+      key = {i}
+      name = {w.word}
+      meaning = {w.defs[0]}
     />
   ));
 
   return (
-    <section className="wordsList">
+    <section className={classes.wordsList}>
       {isLoading && <Loading />}
 
-      {!isLoading &&
+      {!isLoading && 
         <Card colour = {'white'}>
-          <ul>{wordList}</ul>
+          <h1 className={classes.foundHeader}>Words Found</h1>
+          <dl>{wordList}</dl>
         </Card>
       }
     </section>
   );
-
 }
 
-export default SpellWords;
+export default FoundWords;

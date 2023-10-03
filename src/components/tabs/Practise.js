@@ -5,9 +5,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/index';
 
 
 const Practise = () => {
+
+  const dispatch = useDispatch();
   
   const diffOptions = [
     {label: "Easy", key: 1, value: "Easy"},
@@ -15,6 +19,10 @@ const Practise = () => {
     {label: "Hard", key: 3, value: "Hard"},
     {label: "Competitive", key: 4, value: "Competitive"}
   ];
+
+  const findPracticeHandler = () => {
+    dispatch(tabsActions.togglePracticeList());
+  }
 
   return (
     <Grid container spacing={3}>
@@ -55,6 +63,7 @@ const Practise = () => {
               "&:hover": {backgroundColor: "#ff5c6c" },
               color: '#ffffff'  
             }}
+            onClick={findPracticeHandler}
           >
             Find
           </Button>

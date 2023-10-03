@@ -1,0 +1,37 @@
+.wordsList {
+  max-width: 60rem;
+  width: 90%;
+  margin: 2rem auto;
+}
+
+.foundHeader {
+	margin: 1rem;
+}
+
+dl {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	gap: 0.7rem 0;
+	margin: 1rem;
+}
+
+dl > * {
+	background: lavender;
+	padding: 0 1rem;
+}
+
+dl > :nth-of-type(2n) {
+	background: azure;
+}
+
+dt {
+	font-weight: 700;
+	font-size: 1.3rem;
+}
+
+dd {
+	margin: 0;
+	padding: 2rem;
+	display: flex;
+	align-items: center;
+}

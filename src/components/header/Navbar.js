@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import { useNavigate } from 'react-router-dom';
 import Styles from './Navbar.css';
 
 
@@ -31,7 +32,8 @@ const Navbar = () => {
           </IconButton>
           
           <Typography variant="h5" component="div" sx={{ flexGrow: 1, paddingLeft: 1 }}>
-            <Link className='a' to = "/">Spelling App Demo</Link>
+            {/* <Link className='a' to = "/">Spelling App Demo</Link> */}
+            <Link className='a' href="/">Spelling App Demo</Link>
           </Typography>
 
           <Button 

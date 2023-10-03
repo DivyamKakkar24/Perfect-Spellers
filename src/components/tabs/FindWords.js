@@ -6,9 +6,13 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store';
 
 
 const FindWords = () => {
+
+  const dispatch = useDispatch();
   
   const diffOptions = [
     {label: "Random", key: 1, value: "Random"},
@@ -27,6 +31,10 @@ const FindWords = () => {
     {label: "Containing Exactly", key: 3, value: "Containing Exactly"},
     {label: "Containing Letters", key: 4, value: "Containing Letters"}
   ];
+
+  const findWordsHandler = () => {
+    dispatch(tabsActions.toggleFoundWordsList());
+  }
 
   return (
     <Grid container direction="row" spacing={3}>
@@ -112,6 +120,7 @@ const FindWords = () => {
               "&:hover": {backgroundColor: "#ff5c6c" },
               color: '#ffffff' 
             }}
+            onClick={findWordsHandler}
           >
             Find
           </Button>
