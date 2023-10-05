@@ -13,6 +13,8 @@ import Styles from './Navbar.css';
 import AuthContext from '../../context/auth-context';
 import { useDispatch } from 'react-redux';
 import { tabsActions } from '../../store/tabs';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 const ProfileNavbar = () => {
@@ -21,6 +23,10 @@ const ProfileNavbar = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  // const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const pages = ['Products', 'Pricing', 'Blog'];
 
   const logoutHandle = async () => {
     try {
@@ -35,23 +41,84 @@ const ProfileNavbar = () => {
     }
   }
 
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ background: '#191919' }}>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ flexGrow: 1, paddingLeft: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <MenuIcon />
-          </IconButton>
-          
-          <Typography variant="h5" component="div" sx={{ flexGrow: 1, paddingLeft: 1 }}>
-            {/* <Link className='a' to = "/">Spelling App Demo</Link> */}
             <Link className='a' href="/">Spelling App Demo</Link>
           </Typography>
+          
+          <Typography 
+            variant="h5" 
+            component="div" 
+            sx={{ flexGrow: 1, paddingLeft: 1, display: { xs: 'none', md: 'flex' } }}
+          >
+            <Link className='a' href="/">Spelling App Demo</Link>
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, mx: 3, color: 'white', display: 'block' }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+
 
           <Typography variant="subtitle1" gutterBottom color={'#A9FCF1'} sx={{mr: 8}}>
             {ctx.user.email}
