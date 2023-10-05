@@ -29,9 +29,10 @@ const SpellWords = () => {
 
   const wordList = words.slice(0, 10).map((w, i) => (
     <WordItem
-      id = {w.id}
-      key = {w.id}
+      id = {i}
+      key = {i}
       name = {`Word ${i + 1}`}
+      correctAns = {w.word}
       usaccent = {w.audio_US}
       ukaccent = {w.audio_IN}
     />

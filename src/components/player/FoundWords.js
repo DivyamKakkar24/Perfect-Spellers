@@ -12,7 +12,7 @@ const FoundWords = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchWords = async () => {
-    await getDocs(collection(db_firestore, "words_metadata_100"))
+    await getDocs(collection(db_firestore, "words_audio_300"))
       .then((querySnapshot) => {
         const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
 

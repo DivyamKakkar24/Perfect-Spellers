@@ -17,6 +17,8 @@ import AuthContext from '../../context/auth-context';
 import GoogleAuth from './GoogleAuth';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Styles from './Authenticate.css';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/tabs';
 
 
 const defaultTheme = createTheme();
@@ -31,6 +33,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,10 +43,11 @@ const Login = () => {
 
     try {
       const res =await ctx.onLogIn(e, p);
-      console.log(res);
+      // console.log(res);
 
       localStorage.setItem('token', res.user.accessToken);
-
+      
+      dispatch(tabsActions.refreshTabs());
       navigate("/home");
     } catch (err) {
       setError(err.message);
@@ -50,7 +55,7 @@ const Login = () => {
   };
 
   const recaptchaOnChange = (value) => {
-    console.log('Captcha value: ', value);
+    // console.log('Captcha value: ', value);
     setVerified(true);
   }
 

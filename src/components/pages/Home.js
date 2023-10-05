@@ -8,19 +8,22 @@ import AuthContext from '../../context/auth-context';
 import { useSelector } from 'react-redux';
 import BlankImage from '../ui/BlankImage';
 import FoundWords from '../player/FoundWords';
+import TestMode from '../player/TestMode';
 
 
 const Home = () => {
 	const ctx = useContext(AuthContext);
 	const token = useRouteLoaderData('root');
 
-	const showFoundWords = useSelector((state) => state.showFoundWordsList);
+	const showFoundWords = useSelector((state) => state.tabs.showFoundWordsList);
 
-	const showPractice = useSelector((state) => state.showPracticeList);
+	const showPractice = useSelector((state) => state.tabs.showPracticeList);
 
-	const showBlank = useSelector((state) => state.showBlanki);
+	const showBlank = useSelector((state) => state.tabs.showBlanki);
 
-	const newList = useSelector((state) => state.reloadId);
+	const startTest = useSelector((state) => state.tabs.showTest);
+
+	const newList = useSelector((state) => state.tabs.reloadId);
 
 	let valid = false;
 	
@@ -32,6 +35,7 @@ const Home = () => {
 	}
 
 	if(token && ctx.user && token === ctx.user.accessToken){
+		// console.log(token);
 		valid = true;
 	}
 
@@ -43,6 +47,7 @@ const Home = () => {
 			{showBlank && <BlankImage />}
 			{showFoundWords && <FoundWords key={newList} />}
 	  	{showPractice && <SpellWords key={newList} />}
+			{startTest && <TestMode />}
 	  </>
 	)
 };

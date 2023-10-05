@@ -1,12 +1,17 @@
 .word {
   display: flex;
   justify-content: space-between;
-  margin: 1rem;
+  margin: 2rem;
   margin-left: 0;
   padding-bottom: 1rem;
   border-bottom: 1px solid #ccc;
 }
 
+.word h3 {
+  margin-top: 0.6rem;
+}
+
 .accents {
   margin: auto;
+  margin-top: 0;
 }

@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
 import { useDispatch } from 'react-redux';
-import { tabsActions } from '../../store';
+import { tabsActions } from '../../store/tabs';
 
 
 const FindWords = () => {

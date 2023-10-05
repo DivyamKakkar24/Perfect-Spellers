@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom';
 import GoogleAuth from './GoogleAuth';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Styles from './Authenticate.css';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/tabs';
 
 
 const defaultTheme = createTheme();
@@ -31,6 +33,9 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const e = emailRef.current.value;
@@ -41,7 +46,8 @@ const SignUp = () => {
       console.log(res);
       
       localStorage.setItem('token', res.user.accessToken);
-
+      
+      dispatch(tabsActions.refreshTabs());
       navigate("/home");
     } catch (err) {
       setError(err.message);
@@ -50,7 +56,7 @@ const SignUp = () => {
   };
 
   const recaptchaOnChange = (value) => {
-    console.log('Captcha value: ', value);
+    // console.log('Captcha value: ', value);
     setVerified(true);
   }
 

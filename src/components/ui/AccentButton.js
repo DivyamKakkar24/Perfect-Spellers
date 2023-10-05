@@ -20,6 +20,7 @@ const AccentButton = (props) => {
         color: '#192a51',
         "&:hover": {backgroundColor: "#f8f7ff" },
       }}
+      size="large"
     >
       {props.country}
     </Button>

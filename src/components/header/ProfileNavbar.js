@@ -11,19 +11,25 @@ import Link from '@mui/material/Link';
 import { useNavigate } from 'react-router-dom';
 import Styles from './Navbar.css';
 import AuthContext from '../../context/auth-context';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/tabs';
+
 
 const ProfileNavbar = () => {
   const ctx = useContext(AuthContext);
 
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
+
   const logoutHandle = async () => {
     try {
       await ctx.onLogOut();
       
       localStorage.removeItem('token');
-      navigate("/");
       
+      dispatch(tabsActions.refreshTabs());
+      navigate("/");
     } catch(err) {
       console.log(err.message);
     }

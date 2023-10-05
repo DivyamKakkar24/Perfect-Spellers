@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
 import { useDispatch } from 'react-redux';
-import { tabsActions } from '../../store/index';
+import { tabsActions } from '../../store/tabs';
 
 
 const Practise = () => {

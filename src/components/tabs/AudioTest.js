@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -11,9 +12,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 import { pink } from '@mui/material/colors';
 import Style from './Tabs.css';
+import { useNavigate, useRouteLoaderData } from 'react-router-dom';
+import AuthContext from '../../context/auth-context';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/tabs';
 
 
 const AudioTest = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const token = useRouteLoaderData('root');
+	const ctx = useContext(AuthContext);
   
   const diffOptions = [
     {label: "Easy", key: 1, value: "Easy"},
@@ -21,6 +31,16 @@ const AudioTest = () => {
     {label: "Hard", key: 3, value: "Hard"},
     {label: "Competitive", key: 4, value: "Competitive"}
   ];
+
+  const startTestHandler = () => {
+    if(!ctx.user || !token || token !== ctx.user.accessToken) {
+      navigate('/auth?mode=login');
+      return;
+    }
+
+    // console.log(token);
+    dispatch(tabsActions.toggleTestMode());
+  }
 
   const pin = pink[800];
   const pin2 = pink[600];
@@ -81,6 +101,7 @@ const AudioTest = () => {
               "&:hover": {backgroundColor: "#48cae4" },
               color: '#000000'  
             }}
+            onClick={startTestHandler}
           >
             Start
           </Button>
