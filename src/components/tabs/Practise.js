@@ -55,7 +55,7 @@ const Practise = () => {
       </Grid>
       
       <Grid item xs>
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3.2 }}>
           <Button 
             variant="contained" 
             sx={{ 

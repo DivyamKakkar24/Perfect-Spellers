@@ -1,0 +1,9 @@
+.audioTest {
+  max-width: 47rem;
+  width: 90%;
+  margin: 6rem auto;
+}
+
+.audioTest h2 {
+  margin-bottom: 0;
+}

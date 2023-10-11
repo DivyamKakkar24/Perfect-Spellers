@@ -1,0 +1,30 @@
+.resultCard {
+  width: 85%;
+  margin: 2rem auto;
+}
+
+.trophy {
+  text-align: center;
+}
+
+.trophy h1 {
+  color: #29335c;
+  font-size: 27px;
+  margin-top: 0 !important;
+  margin-bottom: 0.8rem !important;
+}
+
+.trophy span {
+  color: #235789;
+  font-size: 17px;
+}
+
+.trophy h4 {
+  margin-bottom: 0.5rem !important;
+}
+
+.trophy h2 {
+  margin-top: 0rem !important;
+  font-size: 32px;
+  color: #70e000;
+}

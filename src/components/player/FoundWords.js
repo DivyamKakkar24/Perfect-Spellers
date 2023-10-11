@@ -1,31 +1,13 @@
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import Card from "../ui/Card";
 import Loading from "../ui/Loading";
-import { db_firestore } from "../../firebase";
 import FoundWord from "./foundword/FoundWord";
 import classes from './FoundWords.module.css';
+import { useSelector } from 'react-redux';
 
 
 const FoundWords = () => {
-  const [words, setWords] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchWords = async () => {
-    await getDocs(collection(db_firestore, "words_audio_300"))
-      .then((querySnapshot) => {
-        const newData = querySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id}));
-
-        setWords(newData);
-
-      })
-    
-    setIsLoading(false);
-  }
-
-  useEffect(() => {
-    fetchWords();
-  }, []);
+  const words = useSelector((state) => state.tabs.wordsFirebase);
 
   const wordList = words.slice(0, 10).map((w, i) => (
     <FoundWord
@@ -38,9 +20,9 @@ const FoundWords = () => {
 
   return (
     <section className={classes.wordsList}>
-      {isLoading && <Loading />}
+      {(words.length === 0) && <Loading />}
 
-      {!isLoading && 
+      {(words.length !== 0) && 
         <Card colour = {'white'}>
           <h1 className={classes.foundHeader}>Words Found</h1>
           <dl>{wordList}</dl>

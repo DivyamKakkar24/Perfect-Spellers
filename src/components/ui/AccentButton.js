@@ -13,14 +13,16 @@ const AccentButton = (props) => {
   return (
     <Button 
       variant="contained" 
-      startIcon={<VolumeUpIcon />} 
+      startIcon={<VolumeUpIcon sx={{ width: 30, height: 30 }} />} 
       onClick={playAudio}
       sx={{
         background: '#f8f7ff', 
         color: '#192a51',
         "&:hover": {backgroundColor: "#f8f7ff" },
+        width: 170,
+        height: 75,
+        fontSize: '23px'
       }}
-      size="large"
     >
       {props.country}
     </Button>
