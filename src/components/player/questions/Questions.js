@@ -11,44 +11,36 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ProgressBar from "../../ui/ProgressBar";
 import classes from './Questions.module.css';
 import api from '../../../util/axiosConfig';
-import { useSelector } from 'react-redux';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { testActions } from "../../../store/test";
 import AuthContext from "../../../context/auth-context";
 import LoadingBuffer from "../../ui/LoadingBuffer";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db_firestore } from "../../../firebase";
 
 
 const Questions = ({ increaseScore }) => {
   const [qno, setQno] = useState(1);
   const [progress, setProgress] = useState(0);
-  const [words, setWords] = useState([]);
   const [userAttempt, setUserAttempt] = useState({});
   const wordInputRef = useRef();
   const ctx = useContext(AuthContext);
   const dispatch = useDispatch();
+  const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:''});
 
-  // const wordsMetadata = useSelector((state) => state.tabs.wordsFirebase);
-  const wordLen = useSelector((state) => state.tabs.testWordLen);
-
-
-  const fetchWords = async() => {
-    try {
-      const response = await api.post("/getRandomWords", {
-        "userName":ctx.user.uid, 
-        "minLength":wordLen, 
-        "maxLength":wordLen
+  const words = useSelector((state) => state.test.testWords);
+  
+  const fetchAudio = async() => {
+    const q = query(collection(db_firestore, "words_audio_300"), where("word", "==", words[qno]));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      setCurrWordAudio({
+        audio_In: doc.data().audio_IN,
+        audio_Us: doc.data().audio_US
       });
-      
-      setWords(response.data);
-
-    } catch(err) {
-      console.log("not working!", err);
-    }
+    });
   }
-
-  useEffect(() => {
-    fetchWords();
-  }, []);
 
 
   const submitNextHandler = (event) => {
@@ -71,6 +63,7 @@ const Questions = ({ increaseScore }) => {
 
     if(qno < 10) {
       setQno(qno + 1);
+      fetchAudio();
     }
   }
 
@@ -112,9 +105,8 @@ const Questions = ({ increaseScore }) => {
         <div className={classes.quo}>Listen carefully. Write the word or phrase you hear.</div>
 
         <Stack sx={{ mt: 2, mb: 4 }} direction="row" spacing={2}>
-        {/* +wordsMetadata["aaron"].audio_IN */}
-          <AccentButton country="US" sound={"data:audio/mpeg;base64,"} />
-          <AccentButton country="UK" sound={"data:audio/mpeg;base64,"} />
+          <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
+          <AccentButton country="UK" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In} />
         </Stack>
 
         <Grid container spacing={3}>
@@ -125,6 +117,7 @@ const Questions = ({ increaseScore }) => {
                 placeholder='Your answer' 
                 id={'word_' + qno} 
                 size="small"
+                value={words[qno - 1]}
                 inputRef={wordInputRef}
                 sx={{
                   "& .MuiOutlinedInput-root": {

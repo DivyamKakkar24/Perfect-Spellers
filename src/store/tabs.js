@@ -6,17 +6,13 @@ const initialTabState = {
   showBlanki: true,
   showTest: false, 
   testWordLen: 0,
-  reloadId: 0,
-  wordsFirebase: {}, 
+  reloadId: 0
 };
 
 const tabsSlice = createSlice({
   name: 'tabs',
   initialState: initialTabState,
   reducers: {
-    fetchWordsMetadata(state, action) {
-      state.wordsFirebase = action.payload;
-    },
     togglePracticeList(state) {
       state.reloadId = Math.random();
       state.showPracticeList = true;

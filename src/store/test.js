@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialTestState = { 
-  showScore: false
+  showScore: false,
+  testWords: []
 };
 
 const testSlice = createSlice({
@@ -11,6 +12,9 @@ const testSlice = createSlice({
   reducers: {
     toggleScore(state) {
       state.showScore = true;
+    },
+    fetchTestWords(state, action) {
+      state.testWords = action.payload;
     }
   }
 });
