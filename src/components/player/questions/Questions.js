@@ -11,7 +11,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ProgressBar from "../../ui/ProgressBar";
 import classes from './Questions.module.css';
 import api from '../../../util/axiosConfig';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { testActions } from "../../../store/test";
 import AuthContext from "../../../context/auth-context";
 import LoadingBuffer from "../../ui/LoadingBuffer";
@@ -19,29 +19,35 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db_firestore } from "../../../firebase";
 
 
-const Questions = ({ increaseScore }) => {
+const Questions = ({ words, increaseScore }) => {
   const [qno, setQno] = useState(1);
   const [progress, setProgress] = useState(0);
   const [userAttempt, setUserAttempt] = useState({});
+
   const wordInputRef = useRef();
   const ctx = useContext(AuthContext);
   const dispatch = useDispatch();
-  const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:''});
+  const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:''});
 
-  const words = useSelector((state) => state.test.testWords);
+  // const words = useSelector((state) => state.test.testWords);
   
-  const fetchAudio = async() => {
-    const q = query(collection(db_firestore, "words_audio_300"), where("word", "==", words[qno]));
+  const fetchAudio = async(i = 0) => {
+    const q = query(collection(db_firestore, "words_audio_300"), where("word", "==", words[i]));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // console.log(doc.id, " => ", doc.data());
       setCurrWordAudio({
         audio_In: doc.data().audio_IN,
-        audio_Us: doc.data().audio_US
+        audio_Us: doc.data().audio_US,
+        audio_In_slow: doc.data().audio_IN_slow,
+        audio_Us_slow: doc.data().audio_US_slow
       });
     });
   }
 
+  useEffect(() => {
+    fetchAudio();
+  }, []);
 
   const submitNextHandler = (event) => {
 		event.preventDefault();
@@ -63,7 +69,7 @@ const Questions = ({ increaseScore }) => {
 
     if(qno < 10) {
       setQno(qno + 1);
-      fetchAudio();
+      fetchAudio(qno);
     }
   }
 
@@ -89,7 +95,7 @@ const Questions = ({ increaseScore }) => {
     <>
       {(words.length === 0) && <LoadingBuffer />}
 
-      { (words.length !== 0) && 
+      {(words.length !== 0) && 
       <Box component="form" onSubmit={submitNextHandler}>
         <Grid container sx={{ mb: 2}}>
           <Grid item xs={11}>
@@ -107,6 +113,8 @@ const Questions = ({ increaseScore }) => {
         <Stack sx={{ mt: 2, mb: 4 }} direction="row" spacing={2}>
           <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
           <AccentButton country="UK" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In} />
+          <AccentButton country="US slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us_slow} />
+          <AccentButton country="UK slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
         </Stack>
 
         <Grid container spacing={3}>
@@ -125,7 +133,7 @@ const Questions = ({ increaseScore }) => {
                       border: "2px solid #000000"             // focus
                     }
                   }
-                }}
+                }}  
                 InputProps={{ 
                   sx: { 
                     borderRadius: 16,

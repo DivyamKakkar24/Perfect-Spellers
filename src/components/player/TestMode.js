@@ -6,6 +6,7 @@ import { testActions } from '../../store/test';
 import Scorecard from './Scorecard';
 import AuthContext from '../../context/auth-context';
 import api from '../../util/axiosConfig';
+import LoadingBuffer from '../ui/LoadingBuffer';
 
 
 const TestMode = () => {
@@ -13,7 +14,7 @@ const TestMode = () => {
   const [score, setScore] = useState(0);
   const ctx = useContext(AuthContext);
   const dispatch = useDispatch();
-
+  const [words, setWords] = useState([]);
   const wordLen = useSelector((state) => state.tabs.testWordLen);
 
   const fetchWords = async() => {
@@ -25,7 +26,8 @@ const TestMode = () => {
       });
       
       dispatch(testActions.fetchTestWords(response.data));
-
+      setWords(response.data);
+      
     } catch(err) {
       console.log("not working!", err);
     }
@@ -46,7 +48,8 @@ const TestMode = () => {
       </h2>
       <hr style={{borderTop: '1px solid #b5bdb2', marginBottom: '1.3rem'}}/>
 
-      {!showScore && <Questions increaseScore={incrementScore} />}
+      {(words.length === 0) && <LoadingBuffer />}
+      {!showScore && (words.length !== 0) && <Questions words={words} increaseScore={incrementScore} />}
       {showScore && <Scorecard score={score} />}
 
     </section>
