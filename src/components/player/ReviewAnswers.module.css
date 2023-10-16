@@ -1,0 +1,37 @@
+.reviewScore span {
+  color: #235789;
+  font-size: 16px;
+}
+
+.reviewScore h1 {
+  color: #29335c;
+  font-size: 27px;
+  margin-top: 0.4rem !important;
+  margin-bottom: 0.8rem !important;
+}
+
+.reviewScore h3 {
+  color: #29335c;
+}
+
+.ques {
+  padding: 1rem;
+}
+
+.correctAnswer {
+  border-radius: 10px;
+  border: 2px solid #3fbf48;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.wrongAnswer {
+  border-radius: 10px;
+  border: 2px solid #e84427;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.output {
+  margin-bottom: 1rem;
+}

@@ -18,7 +18,7 @@ const WordItem = (props) => {
       <h3>{chance ? props.name : props.correctAns}</h3>
       <Stack className={classes.accents} direction="row" spacing={2}>
         <AccentButton country = "US" sound = {"data:audio/mpeg;base64," + props.usaccent} />
-        <AccentButton country = "UK" sound = {"data:audio/mpeg;base64," + props.ukaccent} />
+        <AccentButton country = "IN" sound = {"data:audio/mpeg;base64," + props.ukaccent} />
       </Stack>
 
       <WordItemForm 

@@ -70,6 +70,7 @@ const WordItemForm = (props) => {
         size="small"
         inputRef={wordInputRef}
         InputProps={{
+          spellCheck: 'false',
           endAdornment: (
             <ResultSymbol correct={output} />
           )

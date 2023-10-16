@@ -4,9 +4,21 @@ import trophy from '../../assets/trophy.png';
 import Button from '@mui/material/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Stack from '@mui/material/Stack';
+import { useDispatch, useSelector } from "react-redux";
+import { testActions } from '../../store/test';
 
 
-const Scorecard = (props) => {
+const Scorecard = () => {
+  const score = useSelector((state) => state.test.score);
+  const dispatch = useDispatch();
+
+  const retryHandler = () => {
+    dispatch(testActions.anotherAttempt());
+  }
+
+  const showReview = () => {
+    dispatch(testActions.reviewAnswers());
+  }
   
   return (
     <section className={classes.resultCard}>
@@ -24,7 +36,7 @@ const Scorecard = (props) => {
           <br/><br/>
 
           <h4>Your Score is</h4>
-          <h2>{props.score} / 10</h2>
+          <h2>{score} / 10</h2>
           
           <Stack 
             sx={{ mt: 3, mb: 2 }} 
@@ -44,6 +56,7 @@ const Scorecard = (props) => {
                 paddingRight: 3
               }}
               endIcon={<NavigateNextIcon style={{ color:"#ffffff" }} />}
+              onClick={showReview}
             >
               See your answers
             </Button>
@@ -53,6 +66,7 @@ const Scorecard = (props) => {
               sx={{
                 textTransform: 'none',
               }}
+              onClick={retryHandler}
             >
               Try again
             </Button>

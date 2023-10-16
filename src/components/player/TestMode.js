@@ -7,11 +7,14 @@ import Scorecard from './Scorecard';
 import AuthContext from '../../context/auth-context';
 import api from '../../util/axiosConfig';
 import LoadingBuffer from '../ui/LoadingBuffer';
+import ReviewAnswers from './ReviewAnswers';
 
 
 const TestMode = () => {
+  const showQues = useSelector((state) => state.test.showQuestions);
   const showScore = useSelector((state) => state.test.showScore);
-  const [score, setScore] = useState(0);
+  const review = useSelector((state) => state.test.review);
+
   const ctx = useContext(AuthContext);
   const dispatch = useDispatch();
   const [words, setWords] = useState([]);
@@ -37,9 +40,6 @@ const TestMode = () => {
     fetchWords();
   }, []);
 
-  const incrementScore = () => {
-    setScore(score + 1);
-  }
 
   return (
     <section className={classes.audioTest}>
@@ -49,8 +49,9 @@ const TestMode = () => {
       <hr style={{borderTop: '1px solid #b5bdb2', marginBottom: '1.3rem'}}/>
 
       {(words.length === 0) && <LoadingBuffer />}
-      {!showScore && (words.length !== 0) && <Questions words={words} increaseScore={incrementScore} />}
-      {showScore && <Scorecard score={score} />}
+      {showQues && (words.length !== 0) && <Questions words={words} />}
+      {showScore && <Scorecard />}
+      {review && <ReviewAnswers />}
 
     </section>
   );

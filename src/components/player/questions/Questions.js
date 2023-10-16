@@ -19,7 +19,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { db_firestore } from "../../../firebase";
 
 
-const Questions = ({ words, increaseScore }) => {
+const Questions = ({ words }) => {
   const [qno, setQno] = useState(1);
   const [progress, setProgress] = useState(0);
   const [userAttempt, setUserAttempt] = useState({});
@@ -28,8 +28,6 @@ const Questions = ({ words, increaseScore }) => {
   const ctx = useContext(AuthContext);
   const dispatch = useDispatch();
   const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:''});
-
-  // const words = useSelector((state) => state.test.testWords);
   
   const fetchAudio = async(i = 0) => {
     const q = query(collection(db_firestore, "words_audio_300"), where("word", "==", words[i]));
@@ -56,7 +54,7 @@ const Questions = ({ words, increaseScore }) => {
     const currWord = words[qno - 1];
     
     if (enteredWord === currWord) {
-      increaseScore();
+      dispatch(testActions.incrementScore());
     }
 
     setUserAttempt({...userAttempt, [currWord]: enteredWord});
@@ -82,7 +80,8 @@ const Questions = ({ words, increaseScore }) => {
         "userName": ctx.user.uid, 
         "attempt": userAttempt
       });
-      
+      dispatch(testActions.saveResponse(userAttempt));
+
     } catch(err) {
       console.log("not working!", err);
     }
@@ -112,9 +111,9 @@ const Questions = ({ words, increaseScore }) => {
 
         <Stack sx={{ mt: 2, mb: 4 }} direction="row" spacing={2}>
           <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
-          <AccentButton country="UK" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In} />
+          <AccentButton country="IN" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In} />
           <AccentButton country="US slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us_slow} />
-          <AccentButton country="UK slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
+          <AccentButton country="IN slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
         </Stack>
 
         <Grid container spacing={3}>
@@ -122,10 +121,10 @@ const Questions = ({ words, increaseScore }) => {
             <Box width='400px'>
               <TextField 
                 fullWidth 
+                autoFocus
                 placeholder='Your answer' 
                 id={'word_' + qno} 
                 size="small"
-                value={words[qno - 1]}
                 inputRef={wordInputRef}
                 sx={{
                   "& .MuiOutlinedInput-root": {
@@ -139,6 +138,7 @@ const Questions = ({ words, increaseScore }) => {
                     borderRadius: 16,
                     paddingLeft: 0.5,
                   },
+                  spellCheck: 'false',
                   endAdornment: (
                     <InputAdornment position="end">
                       <KeyboardIcon />
