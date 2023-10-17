@@ -26,7 +26,7 @@ const ReviewAnswers = () => {
   const response = useSelector((state) => state.test.userResponse);
   
   const fetchAudio = async(i = 0) => {
-    const q = query(collection(db_firestore, "words_audio_300"), where("word", "==", words[i]));
+    const q = query(collection(db_firestore, "words_audio_10000"), where("word", "==", words[i]));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // console.log(doc.id, " => ", doc.data());
@@ -87,6 +87,16 @@ const ReviewAnswers = () => {
             </div>
           </Box> }
 
+          { response[words[qno - 1]] === '' &&
+          <Box>
+            <div className={classes.wrongAnswer}>
+              <Stack direction="row" alignItems="center" gap={1}>
+                <ClearIcon sx={{ color: "#e84427" }} />
+                <Typography variant="h6">You didn't answer this question.</Typography>
+              </Stack>
+            </div>
+          </Box> }
+
           <Box>
             <div className={classes.correctAnswer}>
               <Stack direction="row" alignItems="center" gap={1}>
@@ -97,9 +107,6 @@ const ReviewAnswers = () => {
           </Box>
 
           <div className={classes.output}>
-            { response[words[qno - 1]] === "" && 
-            <Alert severity="error">You didn't answer this question.</Alert> }
-
             { response[words[qno - 1]] !== "" && response[words[qno - 1]] !== words[qno - 1] && 
             <Alert severity="error">Sorry, you didn't get this right.</Alert> }
 
