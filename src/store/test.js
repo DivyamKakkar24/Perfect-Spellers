@@ -23,12 +23,18 @@ const testSlice = createSlice({
     },
     anotherAttempt(state) {
       state.showScore = false;
+      state.review = false;
       state.showQuestions = true;
       state.score = 0;
       state.userResponse = {};
     },
     fetchTestWords(state, action) {
       state.testWords = action.payload;
+      state.showScore = false;
+      state.review = false;
+      state.showQuestions = true;
+      state.score = 0;
+      state.userResponse = {};
     },
     saveResponse(state, action) {
       state.userResponse = action.payload;

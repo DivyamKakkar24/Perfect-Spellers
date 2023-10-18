@@ -47,7 +47,7 @@ const Questions = ({ words }) => {
 
   useEffect(() => {
     fetchAudio();
-  }, []);
+  }, [words]);
 
   const submitNextHandler = (event) => {
 		event.preventDefault();
@@ -97,7 +97,7 @@ const Questions = ({ words }) => {
       {(currWordAudio.audio_In === '') && <LoadingBuffer />}
 
       {(currWordAudio.audio_In !== '') && 
-      <Card colour = {'#fff0f3'}>
+      <Card colour = {'#cdb4db'}>
         <Box sx={{padding: '0.5rem'}} component="form" onSubmit={submitNextHandler}>
           <Grid container sx={{ mb: 2}}>
             <Grid item xs={11}>
@@ -109,7 +109,7 @@ const Questions = ({ words }) => {
             </Grid>
           </Grid>
 
-          <hr style={{borderTop: '1px solid #b5bdb2'}}/>
+          <hr style={{borderTop: '1px solid #000000'}}/>
           <div className={classes.quo}>Listen carefully. Write the word or phrase you hear.</div>
 
           <Stack sx={{ mt: 2, mb: 2.4 }} direction="row" spacing={2}>
@@ -137,7 +137,7 @@ const Questions = ({ words }) => {
                   inputRef={wordInputRef}
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      "& > fieldset": { borderColor: "#590d22" },
+                      "& > fieldset": { borderColor: "#422e28" },
                       "&.Mui-focused fieldset": {
                         border: "2px solid #000000"             // focus
                       }
