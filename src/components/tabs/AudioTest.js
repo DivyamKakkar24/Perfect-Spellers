@@ -10,6 +10,7 @@ import { useNavigate, useRouteLoaderData } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
 import { useDispatch } from 'react-redux';
 import { tabsActions } from '../../store/tabs';
+import { useMediaQuery } from '@mui/material';
 
 
 const AudioTest = () => {
@@ -20,6 +21,8 @@ const AudioTest = () => {
 	const ctx = useContext(AuthContext);
 
   const [wordLen, setWordLen] = useState(4);
+
+  const matches = useMediaQuery("(max-width:600px)");
   
   const diffOptions = [
     {label: "Easy", key: 1, value: "Easy"},
@@ -48,9 +51,9 @@ const AudioTest = () => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={4}>
-        <Box width='170px'>
+    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+      <Grid item xs={2} sm={4} md={4}>
+        <Box width={`${matches ? `120px` : `170px`}`}>
           <InputLabel id="ip-label">Word Length: </InputLabel>
           <Select
             labelId="wordlength-labl"
@@ -77,8 +80,8 @@ const AudioTest = () => {
         </Box>
       </Grid>
 
-      <Grid item xs={6}>
-        <Box width='150px'>
+      <Grid item xs={2} sm={4} md={6}>
+        <Box width={`${matches ? `110px` : `150px`}`}>
           <InputLabel id="ip-label">Difficulty: </InputLabel>
           <Select
             labelId="difficulty-labl"

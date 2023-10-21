@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Result from '../../ui/Result';
 import ResultSymbol from '../../ui/ResultSymbol';
+import { useMediaQuery } from '@mui/material';
 
 
 const WordItemForm = (props) => {
@@ -14,6 +15,7 @@ const WordItemForm = (props) => {
 
   const [result, setResult] = useState({show: false, message: '', type: ''});
   const [output, setOutput] = useState({showOp: false, op: false});
+  const matches = useMediaQuery("(max-width:768px)");
 
 
   const showResult = (show = false, type = '', message = '') => {
@@ -61,7 +63,7 @@ const WordItemForm = (props) => {
 
   
   return (
-    <Box component="form" onSubmit={submitHandler} width='300px'>
+    <Box component="form" onSubmit={submitHandler} width={`${matches ? `250px` : `300px`}`}>
       <TextField 
         fullWidth 
         placeholder='Enter the Word' 

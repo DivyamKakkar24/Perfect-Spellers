@@ -6,11 +6,13 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Stack from '@mui/material/Stack';
 import { useDispatch, useSelector } from "react-redux";
 import { testActions } from '../../store/test';
+import { useMediaQuery } from '@mui/material';
 
 
 const Scorecard = () => {
   const score = useSelector((state) => state.test.score);
   const dispatch = useDispatch();
+  const matches = useMediaQuery("(max-width:768px)");
 
   const retryHandler = () => {
     dispatch(testActions.anotherAttempt());
@@ -24,12 +26,21 @@ const Scorecard = () => {
     <section className={classes.resultCard}>
       <Card colour={'white'}>
         <div className={classes.trophy}>
+          { !matches && 
           <img 
             src={trophy} 
             border="0" 
             alt="Trophy" 
             width={180}
-          />
+          /> }
+
+          { matches && 
+          <img 
+            src={trophy} 
+            border="0" 
+            alt="Trophy" 
+            width={120}
+          /> }
 
           <h1>You’ve finished the test!</h1>
           <span>Review your answers and try again.</span>
@@ -38,6 +49,7 @@ const Scorecard = () => {
           <h4>Your Score is</h4>
           <h2>{score} / 10</h2>
           
+          { !matches && 
           <Stack 
             sx={{ mt: 3, mb: 2 }} 
             direction="row" 
@@ -70,7 +82,41 @@ const Scorecard = () => {
             >
               Try again
             </Button>
-          </Stack>
+          </Stack> }
+
+          { matches && 
+          <Stack 
+            sx={{ mt: 4, mb: 1 }}  
+            spacing={2.5}
+            display="flex" justifyContent="center" alignItems="center"
+          >
+            <Button 
+              variant='contained' 
+              sx={{
+                background: '#29335c', 
+                color: '#ffffff', 
+                "&:hover": {backgroundColor: "#29335c" },
+                borderRadius: 16,
+                textTransform: 'none',
+                paddingLeft: 3,
+                paddingRight: 3
+              }}
+              endIcon={<NavigateNextIcon style={{ color:"#ffffff" }} />}
+              onClick={showReview}
+            >
+              Review answers
+            </Button>
+
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+              }}
+              onClick={retryHandler}
+            >
+              Try again
+            </Button>
+          </Stack> }
 
         </div>
       </Card>

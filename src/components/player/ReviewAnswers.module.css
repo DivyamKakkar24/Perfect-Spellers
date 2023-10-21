@@ -35,3 +35,14 @@
 .output {
   margin-bottom: 1rem;
 }
+
+@media screen and (max-width: 768px) {
+  .ques {
+    padding: 0.5rem;
+  }
+
+  .correctAnswer, .wrongAnswer {
+    border-radius: 7px;
+    padding: 0.5rem;
+  }
+}

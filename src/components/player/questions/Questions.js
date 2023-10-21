@@ -18,12 +18,14 @@ import AuthContext from "../../../context/auth-context";
 import LoadingBuffer from "../../ui/LoadingBuffer";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db_firestore } from "../../../firebase";
+import { useMediaQuery } from "@mui/material";
 
 
 const Questions = ({ words }) => {
   const [qno, setQno] = useState(1);
   const [progress, setProgress] = useState(0);
   const [userAttempt, setUserAttempt] = useState({});
+  const matches = useMediaQuery("(max-width:768px)");
 
   const wordInputRef = useRef();
   const ctx = useContext(AuthContext);
@@ -104,13 +106,14 @@ const Questions = ({ words }) => {
               <ProgressBar prog = {progress} />
             </Grid>
 
+            {!matches && 
             <Grid item xs>
               <b>{qno}/10</b>
-            </Grid>
+            </Grid> }
           </Grid>
 
           <hr style={{borderTop: '1px solid #000000'}}/>
-          <div className={classes.quo}>Listen carefully. Write the word or phrase you hear.</div>
+          <div className={classes.quo}>{matches && <b>{qno}. </b>}Listen carefully. Write the word or phrase you hear.</div>
 
           <Stack sx={{ mt: 2, mb: 2.4 }} direction="row" spacing={2}>
             <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
@@ -119,15 +122,23 @@ const Questions = ({ words }) => {
             <AccentButton country="IN slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
           </Stack>
 
+          { !matches && 
           <Box sx={{ mb: 4 }}>
             <div className={classes.definition}>
               {currWordAudio.def}
             </div>
-          </Box>
+          </Box> }
+
+          { matches && 
+          <Box sx={{ mb: 2 }}>
+            <div className={classes.definition}>
+              {currWordAudio.def}
+            </div>
+          </Box> }
 
           <Grid container spacing={3}>
             <Grid item>
-              <Box width='400px'>
+              <Box width={`${matches ? `250px` : `400px`}`}>
                 <TextField 
                   fullWidth 
                   autoFocus

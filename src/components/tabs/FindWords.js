@@ -6,9 +6,12 @@ import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
+import { useMediaQuery } from '@mui/material';
 
 
 const FindWords = () => {
+  const matches = useMediaQuery("(max-width:600px)");
+
   const diffOptions = [
     {label: "Random", key: 1, value: "Random"},
     {label: "3-Letter Words", key: 2, value: "3-Letter Words"},
@@ -31,7 +34,7 @@ const FindWords = () => {
   return (
     <Grid container direction="row" spacing={3}>
       <Grid item xs>
-        <Box width='170px'>
+        <Box width={`${matches ? `120px` : `170px`}`}>
           <InputLabel id="ip-label">Word Length: </InputLabel>
           <Select
             labelId="wordlength-labl"
@@ -59,7 +62,7 @@ const FindWords = () => {
       </Grid>
 
       <Grid item xs>
-        <Box width='194px'>
+        <Box width={`${matches ? `120px` : `194px`}`}>
           <InputLabel id="ip-label">Advanced Filter: </InputLabel>
           <Select
             labelId="specify-labl"

@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import Alert from '@mui/material/Alert';
+import { useMediaQuery } from "@mui/material";
 
 
 const ReviewAnswers = () => {
@@ -24,6 +25,7 @@ const ReviewAnswers = () => {
   const words = useSelector((state) => state.test.testWords);
   const score = useSelector((state) => state.test.score);
   const response = useSelector((state) => state.test.userResponse);
+  const matches = useMediaQuery("(max-width:768px)");
   
   const fetchAudio = async(i = 0) => {
     const q = query(collection(db_firestore, "words_audio_10000"), where("word", "==", words[i]));
@@ -132,7 +134,7 @@ const ReviewAnswers = () => {
                   onClick={previousHandler}
                   disabled={qno === 1}
                 >
-                  Previous
+                  {matches ? 'Prev' : 'Previous'}
                 </Button>
               </Box>
             </Grid>

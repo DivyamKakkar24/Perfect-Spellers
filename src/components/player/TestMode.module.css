@@ -7,3 +7,11 @@
 .audioTest h2 {
   margin-bottom: 0;
 }
+
+@media screen and (max-width: 768px) {
+  .audioTest {
+    max-width: 30rem;
+    width: 90%;
+    margin: 6rem auto;
+  }
+}

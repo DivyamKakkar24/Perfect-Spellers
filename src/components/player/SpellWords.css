@@ -10,3 +10,11 @@
   margin: 2rem auto;
   color: #ffee32;
 }
+
+@media screen and (max-width: 768px) {
+  .wordsList {
+    max-width: 30rem;
+    width: 90%;
+    margin: 2rem auto;
+  }
+}

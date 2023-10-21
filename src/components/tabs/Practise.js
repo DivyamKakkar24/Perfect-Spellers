@@ -7,11 +7,14 @@ import Button from '@mui/material/Button';
 import Style from './Tabs.css';
 import { useDispatch } from 'react-redux';
 import { tabsActions } from '../../store/tabs';
+import { useMediaQuery } from '@mui/material';
 
 
 const Practise = () => {
 
   const dispatch = useDispatch();
+
+  const matches = useMediaQuery("(max-width:600px)");
   
   const diffOptions = [
     {label: "Easy", key: 1, value: "Easy"},
@@ -27,7 +30,7 @@ const Practise = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={6} md={10}>
-        <Box width='150px'>
+        <Box width={`${matches ? `110px` : `150px`}`}>
           <InputLabel id="ip-label">Difficulty: </InputLabel>
           <Select
             labelId="difficulty-labl"
