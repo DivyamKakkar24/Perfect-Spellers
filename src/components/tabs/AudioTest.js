@@ -37,7 +37,13 @@ const AudioTest = () => {
     {label: "6-Letter Words", key: 3, value: 6},
     {label: "7-Letter Words", key: 4, value: 7},
     {label: "8-Letter Words", key: 5, value: 8},
-    {label: "9-Letter Words", key: 6, value: 9}
+    {label: "9-Letter Words", key: 6, value: 9},
+    {label: "10-Letter Words", key: 7, value: 10},
+    {label: "11-Letter Words", key: 8, value: 11},
+    {label: "12-Letter Words", key: 9, value: 12},
+    {label: "13-Letter Words", key: 10, value: 13},
+    {label: "14-Letter Words", key: 11, value: 14},
+    {label: "15-Letter Words", key: 12, value: 15}
   ];
 
   const startTestHandler = () => {
