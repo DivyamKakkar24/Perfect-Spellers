@@ -8,6 +8,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import Button from '@mui/material/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import Card from "../../ui/Card";
 import ProgressBar from "../../ui/ProgressBar";
 import classes from './Questions.module.css';
@@ -32,6 +33,7 @@ const Questions = ({ words }) => {
   const dispatch = useDispatch();
   const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:'',def:''});
   
+
   const fetchAudio = async(i = 0) => {
     const q = query(collection(db_firestore, "words_audio_10000"), where("word", "==", words[i]));
     const querySnapshot = await getDocs(q);
@@ -47,9 +49,22 @@ const Questions = ({ words }) => {
     });
   }
 
+  
   useEffect(() => {
     fetchAudio();
   }, [words]);
+
+  const previousHandler = () => {
+    if(qno > 1) {
+      setQno(qno - 1);
+      fetchAudio(qno - 2); 
+      wordInputRef.current.value = "";
+    }
+
+    if (progress > 0) {
+      setProgress(progress - 10);
+    }
+  }
 
   const submitNextHandler = (event) => {
 		event.preventDefault();
@@ -60,8 +75,12 @@ const Questions = ({ words }) => {
     if (enteredWord === currWord) {
       dispatch(testActions.incrementScore());
     }
-
-    setUserAttempt({...userAttempt, [currWord]: enteredWord});
+    
+    if([currWord] in userAttempt && enteredWord === "") {
+      console.log("Do nothing");
+    } else {
+      setUserAttempt({...userAttempt, [currWord]: enteredWord});
+    }
 
     wordInputRef.current.value = "";
 
@@ -72,6 +91,9 @@ const Questions = ({ words }) => {
     if(qno < 10) {
       setQno(qno + 1);
       fetchAudio(qno);
+    } else {
+      setQno(qno + 1);
+      setCurrWordAudio({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:'',def:'abc'});
     }
   }
 
@@ -96,9 +118,9 @@ const Questions = ({ words }) => {
   
   return (
     <>
-      {(currWordAudio.audio_In === '') && <LoadingBuffer />}
+      {(currWordAudio.def === '') && <LoadingBuffer />}
 
-      {(currWordAudio.audio_In !== '') && 
+      {(currWordAudio.def !== '') && 
       <Card colour = {'#cdb4db'}>
         <Box sx={{padding: '0.5rem'}} component="form" onSubmit={submitNextHandler}>
           <Grid container sx={{ mb: 2}}>
@@ -106,14 +128,14 @@ const Questions = ({ words }) => {
               <ProgressBar prog = {progress} />
             </Grid>
 
-            {!matches && 
+            {!matches && qno < 11 && 
             <Grid item xs>
-              <b>{qno}/10</b>
+              <b>{Math.min(qno, 10)}/10</b>
             </Grid> }
           </Grid>
 
           <hr style={{borderTop: '1px solid #000000'}}/>
-          <div className={classes.quo}>{matches && <b>{qno}. </b>}Listen carefully. Write the word or phrase you hear.</div>
+          <div className={classes.quo}>{matches && qno<11 && <b>{qno}. </b>}Listen carefully. Write the word or phrase you hear.</div>
 
           <Stack sx={{ mt: 2, mb: 2.4 }} direction="row" spacing={2}>
             <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
@@ -122,14 +144,14 @@ const Questions = ({ words }) => {
             <AccentButton country="IN slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
           </Stack>
 
-          { !matches && 
+          { !matches && currWordAudio.def !== 'abc' &&
           <Box sx={{ mb: 4 }}>
             <div className={classes.definition}>
               {currWordAudio.def}
             </div>
           </Box> }
 
-          { matches && 
+          { matches && currWordAudio.def !== 'abc' &&
           <Box sx={{ mb: 2 }}>
             <div className={classes.definition}>
               {currWordAudio.def}
@@ -169,7 +191,7 @@ const Questions = ({ words }) => {
                 />
               </Box>
             </Grid>
-
+            
             <Grid item xs={4}>
               <Box sx={{ mt: 0.2 }}>
                 <Button 
@@ -191,6 +213,28 @@ const Questions = ({ words }) => {
               </Box>
             </Grid>
             
+            <Grid item xs={3.5}>
+              <Box>
+                <Button 
+                  variant='contained' 
+                  sx={{
+                    background: '#29335c', 
+                    color: '#ffffff', 
+                    "&:hover": {backgroundColor: "#29335c" },
+                    borderRadius: 16,
+                    textTransform: 'none',
+                    paddingLeft: 3,
+                    paddingRight: 3
+                  }}
+                  startIcon={<NavigateBeforeIcon />}
+                  onClick={previousHandler}
+                  disabled={qno === 1}
+                >
+                  {matches ? '' : 'Prev'}
+                </Button>
+              </Box>
+            </Grid>
+
             <Grid item xs={4}>
               <Box>
                 {progress !== 100 && 
@@ -208,7 +252,7 @@ const Questions = ({ words }) => {
                   endIcon={<NavigateNextIcon />}
                   onClick={submitNextHandler}
                 >
-                  Next
+                  {matches ? '' : 'Next'}
                 </Button> }
 
                 {progress === 100 && 
@@ -229,6 +273,7 @@ const Questions = ({ words }) => {
                 </Button> }
               </Box>
             </Grid>
+            
           </Grid>
         </Box>
       </Card> }

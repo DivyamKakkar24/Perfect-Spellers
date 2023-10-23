@@ -9,23 +9,26 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import classes from './ReviewAnswers.module.css';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db_firestore } from "../../firebase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { testActions } from "../../store/test";
 import Card from "../ui/Card";
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
 import Alert from '@mui/material/Alert';
 import { useMediaQuery } from "@mui/material";
+import LoadingBuffer from "../ui/LoadingBuffer";
 
 
 const ReviewAnswers = () => {
   const [qno, setQno] = useState(1);
-  const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:''});
+  const [currWordAudio, setCurrWordAudio] = useState({audio_In:'',audio_Us:'',audio_Us_slow:'',audio_In_slow:'',def:''});
 
   const words = useSelector((state) => state.test.testWords);
   const score = useSelector((state) => state.test.score);
   const response = useSelector((state) => state.test.userResponse);
   const matches = useMediaQuery("(max-width:768px)");
+  const dispatch = useDispatch();
   
   const fetchAudio = async(i = 0) => {
     const q = query(collection(db_firestore, "words_audio_10000"), where("word", "==", words[i]));
@@ -36,7 +39,8 @@ const ReviewAnswers = () => {
         audio_In: doc.data().audio_IN,
         audio_Us: doc.data().audio_US,
         audio_In_slow: doc.data().audio_IN_slow,
-        audio_Us_slow: doc.data().audio_US_slow
+        audio_Us_slow: doc.data().audio_US_slow,
+        def: doc.data().def,
       });
     });
   }
@@ -59,6 +63,9 @@ const ReviewAnswers = () => {
     }
   }
 
+  const retryHandler = () => {
+    dispatch(testActions.anotherAttempt());
+  }
   
   return (
     <Box>
@@ -68,23 +75,40 @@ const ReviewAnswers = () => {
         <h3>Review your answers</h3>
       </div>
 
+      {(currWordAudio.def === '') && <LoadingBuffer />}
+
+      {(currWordAudio.def !== '') && 
       <Card colour = {'white'}>
         <section className={classes.ques}>
           <div className={classes.quo}><b>{qno}.</b> Listen carefully. Write the word or phrase you hear.</div>
 
-          <Stack sx={{ mt: 2, mb: 4 }} direction="row" spacing={2}>
+          <Stack sx={{ mt: 2, mb: 2.4 }} direction="row" spacing={2}>
             <AccentButton country="US" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us} />
             <AccentButton country="IN" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In} />
             <AccentButton country="US slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_Us_slow} />
             <AccentButton country="IN slow" sound={"data:audio/mpeg;base64,"+currWordAudio.audio_In_slow} />
           </Stack>
 
+          { !matches && 
+          <Box sx={{ mb: 3 }}>
+            <div className={classes.definition}>
+              {currWordAudio.def}
+            </div>
+          </Box> }
+
+          { matches && 
+          <Box sx={{ mb: 2 }}>
+            <div className={classes.definition}>
+              {currWordAudio.def}
+            </div>
+          </Box> }
+
           { response[words[qno - 1]] !== '' && response[words[qno - 1]] !== words[qno - 1] &&
           <Box>
             <div className={classes.wrongAnswer}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <ClearIcon sx={{ color: "#e84427" }} />
-                <Typography variant="h6">{response[words[qno - 1]]}</Typography>
+                <Typography variant={`${matches ? `h7` : `h6`}`}>{response[words[qno - 1]]}</Typography>
               </Stack>
             </div>
           </Box> }
@@ -94,7 +118,7 @@ const ReviewAnswers = () => {
             <div className={classes.wrongAnswer}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <ClearIcon sx={{ color: "#e84427" }} />
-                <Typography variant="h6">You didn't answer this question.</Typography>
+                <Typography variant={`${matches ? `h7` : `h6`}`}>You didn't answer this question.</Typography>
               </Stack>
             </div>
           </Box> }
@@ -103,7 +127,7 @@ const ReviewAnswers = () => {
             <div className={classes.correctAnswer}>
               <Stack direction="row" alignItems="center" gap={1}>
                 <CheckIcon sx={{ color: "#3fbf48" }} />
-                <Typography variant="h6">{words[qno - 1]}</Typography>
+                <Typography variant={`${matches ? `h7` : `h6`}`}>{words[qno - 1]}</Typography>
               </Stack>
             </div>
           </Box>
@@ -117,7 +141,7 @@ const ReviewAnswers = () => {
           </div>
 
           <Grid container spacing={3}>
-            <Grid item xs={4}>
+            <Grid item xs={3.5}>
               <Box>
                 <Button 
                   variant='contained' 
@@ -134,11 +158,11 @@ const ReviewAnswers = () => {
                   onClick={previousHandler}
                   disabled={qno === 1}
                 >
-                  {matches ? 'Prev' : 'Previous'}
+                  {matches ? '' : 'Prev'}
                 </Button>
               </Box>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={4.5}>
               <Box>
                 <Button 
                   variant='contained' 
@@ -155,14 +179,29 @@ const ReviewAnswers = () => {
                   onClick={nextHandler}
                   disabled={qno === 10}
                 >
-                  Next
+                  {matches ? '' : 'Next'}
                 </Button>
               </Box>
             </Grid>
+            
+            { qno === 10 && 
+            <Grid item xs={4}>
+              <Box>
+                <Button
+                  variant="outlined"
+                  sx={{
+                    textTransform: 'none',
+                  }}
+                  onClick={retryHandler}
+                >
+                  {matches ? 'Retry' : 'Try again'}
+                </Button>
+              </Box>
+            </Grid> }
 
           </Grid>
         </section>
-      </Card>
+      </Card> }
 
     </Box>
   );
