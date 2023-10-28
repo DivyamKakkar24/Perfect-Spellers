@@ -96,7 +96,7 @@ const ProfileNavbar = () => {
             component="div" 
             sx={{ flexGrow: 1, paddingLeft: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <Link className='a' href="/">Spelling App Demo</Link>
+            <Link className='a' href="/">Perfect Spellers</Link>
           </Typography>
           
           <Typography 
@@ -104,7 +104,7 @@ const ProfileNavbar = () => {
             component="div" 
             sx={{ flexGrow: 1, paddingLeft: 1, display: { xs: 'none', md: 'flex' } }}
           >
-            <Link className='a' href="/">Spelling App Demo</Link>
+            <Link className='a' href="/">Perfect Spellers</Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

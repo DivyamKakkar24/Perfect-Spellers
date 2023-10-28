@@ -7,20 +7,24 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Style from './Tabs.css';
 import { useMediaQuery } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { tabsActions } from '../../store/tabs';
+import { useState } from 'react';
 
 
 const FindWords = () => {
+  const dispatch = useDispatch();
   const matches = useMediaQuery("(max-width:600px)");
 
+  const [wordLen, setWordLen] = useState(0);
+
   const diffOptions = [
-    {label: "Random", key: 1, value: "Random"},
-    {label: "3-Letter Words", key: 2, value: "3-Letter Words"},
-    {label: "4-Letter Words", key: 3, value: "4-Letter Words"},
-    {label: "5-Letter Words", key: 4, value: "5-Letter Words"},
-    {label: "6-Letter Words", key: 5, value: "6-Letter Words"},
-    {label: "7-Letter Words", key: 6, value: "7-Letter Words"},
-    {label: "8-Letter Words", key: 7, value: "8-Letter Words"},
-    {label: "9-Letter Words", key: 8, value: "9-Letter Words"}
+    {label: "Random", key: 0, value: 0},
+    {label: "4-Letter Words", key: 1, value: 4},
+    {label: "5-Letter Words", key: 2, value: 5},
+    {label: "6-Letter Words", key: 3, value: 6},
+    {label: "7-Letter Words", key: 4, value: 7},
+    {label: "8-Letter Words", key: 5, value: 8}
   ];
 
   const specifyOptions = [
@@ -30,6 +34,9 @@ const FindWords = () => {
     {label: "Containing Letters", key: 4, value: "Containing Letters"}
   ];
 
+  const findWordsHandler = () => {
+    dispatch(tabsActions.toggleFoundWords(wordLen));
+  }
 
   return (
     <Grid container direction="row" spacing={3}>
@@ -39,8 +46,8 @@ const FindWords = () => {
           <Select
             labelId="wordlength-labl"
             id="length"
-            defaultValue="Random"
-            onChange={() => console.log("")}
+            defaultValue={0}
+            onChange={(e) => setWordLen(e.target.value)}
             fullWidth
             sx={{
               mt: 1,
@@ -115,6 +122,7 @@ const FindWords = () => {
               "&:hover": {backgroundColor: "#ff5c6c" },
               color: '#ffffff' 
             }}
+            onClick={findWordsHandler}
           >
             Find
           </Button>

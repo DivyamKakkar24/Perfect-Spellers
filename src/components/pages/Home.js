@@ -3,6 +3,7 @@ import Navbar from '../header/Navbar';
 import ProfileNavbar from '../header/ProfileNavbar';
 import { Navigate, useLocation, useRouteLoaderData } from 'react-router-dom';
 import SelectCriteria from '../player/SelectCriteria';
+import FoundWords from '../player/FoundWords';
 import SpellWords from '../player/SpellWords';
 import AuthContext from '../../context/auth-context';
 import { useSelector } from 'react-redux';
@@ -13,6 +14,8 @@ import TestMode from '../player/TestMode';
 const Home = () => {
 	const ctx = useContext(AuthContext);
 	const token = useRouteLoaderData('root');
+
+	const showWords = useSelector((state) => state.tabs.showFoundWords);
 
 	const showPractice = useSelector((state) => state.tabs.showPracticeList);
 
@@ -42,6 +45,7 @@ const Home = () => {
 			{!valid && <Navbar />}
 			{ !startTest && <SelectCriteria /> }
 			{ showBlank && <BlankImage /> }
+			{ showWords && <FoundWords key={newList} /> }
 	  	{ showPractice && <SpellWords key={newList} /> }
 			{ startTest && <TestMode /> }
 	  </>
