@@ -17,6 +17,8 @@ const FindWords = () => {
   const matches = useMediaQuery("(max-width:600px)");
 
   const [wordLen, setWordLen] = useState(0);
+  const [advancedFilterType, setAdvancedFilterType] = useState("Starting With");
+  const [advancedFilterValue, setAdvancedFilterValue] = useState("");
 
   const diffOptions = [
     {label: "Random", key: 0, value: 0},
@@ -35,7 +37,13 @@ const FindWords = () => {
   ];
 
   const findWordsHandler = () => {
-    dispatch(tabsActions.toggleFoundWords(wordLen));
+    dispatch(tabsActions.toggleFoundWords({
+      wordLen,
+      advancedFilter: {
+        type: advancedFilterType,
+        value: advancedFilterValue.toLowerCase().trim()
+      }
+    }));
   }
 
   return (
@@ -74,8 +82,8 @@ const FindWords = () => {
           <Select
             labelId="specify-labl"
             id="specify"
-            defaultValue="Starting With"
-            onChange={() => console.log("")}
+            value={advancedFilterType}
+            onChange={(e) => setAdvancedFilterType(e.target.value)}
             fullWidth
             sx={{
               mt: 1,
@@ -104,6 +112,8 @@ const FindWords = () => {
             variant="filled" 
             size="small"
             color="success"
+            value={advancedFilterValue}
+            onChange={(e) => setAdvancedFilterValue(e.target.value)}
             sx={{ 
               input: { color: 'white' }, 
             }}

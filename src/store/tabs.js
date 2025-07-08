@@ -8,7 +8,11 @@ const initialTabState = {
   showTest: false, 
   foundWordsLen: 0,
   testWordLen: 0,
-  reloadId: 0
+  reloadId: 0,
+  advancedFilter: {
+    type: "Starting With",
+    value: ""
+  }
 };
 
 const tabsSlice = createSlice({
@@ -17,7 +21,8 @@ const tabsSlice = createSlice({
   reducers: {
     toggleFoundWords(state, action) {
       state.showFoundWords = true;
-      state.foundWordsLen = action.payload;
+      state.foundWordsLen = action.payload.wordLen;
+      state.advancedFilter = action.payload.advancedFilter;
       state.reloadId = Math.random();
       state.showPracticeList = false;
       state.showBlanki = false;
@@ -45,6 +50,10 @@ const tabsSlice = createSlice({
       state.foundWordsLen = 0;
       state.testWordLen = 0;
       state.reloadId = 0; 
+      state.advancedFilter = {
+        type: "Starting With",
+        value: ""
+      };
     }
   }
 });
